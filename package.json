@@ -1,0 +1,34 @@
+{
+  "name": "mysmart-timer-card",
+  "version": "0.1.0",
+  "description": "A touch-friendly kitchen timer card for Home Assistant, driven by a timer helper, with draggable digits and presets.",
+  "main": "mysmart-timer-card.js",
+  "type": "module",
+  "homepage": "https://github.com/agoberg85/mysmart-timer-card",
+  "bugs": {
+    "url": "https://github.com/agoberg85/mysmart-timer-card/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agoberg85/mysmart-timer-card.git"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "test": "node --test"
+  },
+  "keywords": [
+    "home-assistant",
+    "lovelace",
+    "timer",
+    "kitchen",
+    "custom-card"
+  ],
+  "author": "agoberg85",
+  "license": "ISC",
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "lit": "^3.3.2",
+    "rollup": "^4.57.1"
+  }
+}
