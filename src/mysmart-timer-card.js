@@ -569,7 +569,7 @@ class MySmartTimerCard extends LitElement {
     return html`
       <div class="clock ${editable ? 'is-editable' : ''}" role="timer" aria-live="off">
         ${this._renderField('minutes', minutes, editable)}
-        <div class="separator" aria-hidden="true"><span></span><span></span></div>
+        <div class="separator" aria-hidden="true"><div class="separator-line"><span class="colon">:</span></div></div>
         ${this._renderField('seconds', seconds, editable)}
       </div>
     `;
@@ -658,7 +658,8 @@ class MySmartTimerCard extends LitElement {
       `;
     }
 
-    const runningAdd = parseDuration(this.config?.running_add) || 60;
+    // running_add: 0 hides the chip; stop and restart are always shown.
+    const runningAdd = parseDuration(this.config?.running_add);
     const isActive = snapshot.status === STATUS_ACTIVE;
 
     return html`
@@ -669,9 +670,11 @@ class MySmartTimerCard extends LitElement {
         <button class="round-button" aria-label=${this._t('restart')} @click=${() => this._restart()}>
           <ha-icon icon="mdi:restart"></ha-icon>
         </button>
-        <button class="chip" aria-label=${this._quickAddAria(runningAdd)} @click=${() => this._addTime(runningAdd)}>
-          ${this._quickAddLabel(runningAdd)}
-        </button>
+        ${runningAdd > 0 ? html`
+          <button class="chip" aria-label=${this._quickAddAria(runningAdd)} @click=${() => this._addTime(runningAdd)}>
+            ${this._quickAddLabel(runningAdd)}
+          </button>
+        ` : nothing}
         <button
           class="play-button"
           aria-label=${isActive ? this._t('pause') : this._t('resume')}

@@ -8,7 +8,7 @@ export const cardStyles = css`
         --mysmart-timer-muted: var(--secondary-text-color, rgba(255, 255, 255, 0.6));
         --mysmart-timer-accent: var(--active-big, var(--accent-color, #ff8b5e));
         --mysmart-timer-digit-color: var(--mysmart-timer-ink);
-        --mysmart-timer-separator-color: var(--mysmart-timer-muted);
+        --mysmart-timer-separator-color: var(--mysmart-timer-digit-color);
         --mysmart-timer-arrow-color: var(--mysmart-timer-muted);
         --mysmart-timer-button-background: rgba(255, 255, 255, 0.06);
         --mysmart-timer-button-color: var(--mysmart-timer-ink);
@@ -90,19 +90,25 @@ export const cardStyles = css`
         color: var(--mysmart-timer-digit-color);
       }
 
-      .field {
+      .field,
+      .separator {
         display: grid;
+        grid-template-rows: 32px auto 32px;
         justify-items: center;
         gap: 2px;
       }
 
-      .digits {
-        display: flex;
+      .digits,
+      .separator-line {
         font-size: 104px;
         font-weight: 300;
         letter-spacing: -0.03em;
         line-height: 1;
         padding: 6px 4px;
+      }
+
+      .digits {
+        display: flex;
         border-radius: 20px;
         outline: none;
         touch-action: none;
@@ -126,18 +132,22 @@ export const cardStyles = css`
         font-variant-numeric: tabular-nums;
       }
 
-      .separator {
-        display: grid;
-        gap: 34px;
-        margin: 0 6px;
-        align-self: center;
+      /* Same colon as the wall clock: a smaller ":" raised with vertical-align: super and nudged back down.
+         It sits in a line with the digits' font size and padding, so it shares their baseline.
+         line-height: 0 keeps the raised glyph from making that line taller. */
+      .separator-line {
+        grid-row: 2;
+        padding-inline: 0;
+        color: var(--mysmart-timer-separator-color);
       }
 
-      .separator span {
-        width: 14px;
-        height: 14px;
-        border-radius: 999px;
-        background: var(--mysmart-timer-separator-color);
+      .colon {
+        font-size: 0.6em;
+        line-height: 0;
+        vertical-align: super;
+        position: relative;
+        top: var(--mysmart-timer-colon-offset, 18px);
+        padding: 0 10px;
       }
 
       .arrow {
@@ -304,9 +314,8 @@ export const cardStyles = css`
         color: inherit;
       }
 
-      .shell.is-alarm .separator span {
-        background: currentColor;
-        opacity: 0.5;
+      .shell.is-alarm .separator-line {
+        color: inherit;
       }
 
       .controls {

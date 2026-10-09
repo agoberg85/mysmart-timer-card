@@ -41,8 +41,8 @@ presets:
 | `height` | auto | Card height, e.g. `288`. |
 | `auto_dismiss` | `120` | Seconds before the finish flash stops. `0` = until tapped. |
 | `seconds_step` | `5` | Step for the seconds field. |
-| `quick_add` | `[30, 60, 300]` | Quick-add buttons (seconds). |
-| `running_add` | `60` | Seconds added while running. |
+| `quick_add` | `[30, 60, 300]` | Quick-add buttons (seconds). `[]` hides them. |
+| `running_add` | `60` | Seconds added by the button shown while running. `0` hides it (stop and restart always stay). |
 
 ### Colors
 
