@@ -10,6 +10,7 @@ import {
   isFinishedAlarm,
   looksLikeFinish,
   normalizePresets,
+  parseActionConfig,
   parseDuration,
   resolveActivePreset,
   splitClock,
@@ -115,4 +116,24 @@ test('resolveActivePreset prefers the preset this card started, then matches by 
   assert.equal(resolveActivePreset(presets, { status: 'active', duration: 360 }), 0);
   assert.equal(resolveActivePreset(presets, { status: 'active', duration: 540 }, 2), 2);
   assert.equal(resolveActivePreset(presets, { status: 'paused', duration: 999 }), -1);
+});
+
+test('parseActionConfig reads strings and action objects', () => {
+  assert.deepEqual(parseActionConfig('script.stop_alarm'), {
+    domain: 'script',
+    service: 'stop_alarm',
+    data: {},
+    target: undefined,
+  });
+  assert.deepEqual(
+    parseActionConfig({ action: 'light.turn_on', data: { brightness_pct: 50 }, target: { entity_id: 'light.a' } }),
+    { domain: 'light', service: 'turn_on', data: { brightness_pct: 50 }, target: { entity_id: 'light.a' } },
+  );
+});
+
+test('parseActionConfig ignores missing or malformed actions', () => {
+  assert.equal(parseActionConfig(undefined), null);
+  assert.equal(parseActionConfig(''), null);
+  assert.equal(parseActionConfig('not-an-action'), null);
+  assert.equal(parseActionConfig({ data: {} }), null);
 });

@@ -13,6 +13,7 @@ import {
   isFinishedAlarm,
   looksLikeFinish,
   normalizePresets,
+  parseActionConfig,
   parseDuration,
   resolveActivePreset,
   splitClock,
@@ -44,6 +45,7 @@ const COLOR_OPTIONS = {
   preset_background: '--mysmart-timer-preset-background',
   preset_icon_background: '--mysmart-timer-preset-icon-background',
   preset_icon_color: '--mysmart-timer-preset-icon-color',
+  preset_icon_border: '--mysmart-timer-preset-icon-border',
   preset_active_background: '--mysmart-timer-preset-active-background',
   preset_active_color: '--mysmart-timer-preset-active-color',
   flash_background: '--mysmart-timer-flash-background',
@@ -363,6 +365,21 @@ class MySmartTimerCard extends LitElement {
     this._dismissedKey = key;
     this._observedFinishKey = '';
     writeStorage(this._storageKey('dismissed'), key);
+    this._runDismissAction();
+  }
+
+  // Runs after the flash is already dismissed, so a failed call never leaves the card stuck.
+  async _runDismissAction() {
+    const action = parseActionConfig(this.config?.dismiss_action);
+    if (!action) {
+      return;
+    }
+
+    try {
+      await this.hass.callService(action.domain, action.service, action.data, action.target);
+    } catch (error) {
+      console.warn('mysmart-timer-card: dismiss_action failed', error);
+    }
   }
 
   // ---------------------------------------------------------------- digit editing

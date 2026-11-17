@@ -15,7 +15,8 @@ export const cardStyles = css`
         --mysmart-timer-play-background: var(--mysmart-timer-accent);
         --mysmart-timer-play-color: rgba(0, 0, 0, 0.82);
         --mysmart-timer-preset-background: var(--mysmart-timer-card-background);
-        --mysmart-timer-preset-icon-background: rgba(255, 255, 255, 0.06);
+        --mysmart-timer-preset-icon-background: rgba(250, 251, 252, 0.1);
+        --mysmart-timer-preset-icon-border: rgba(250, 251, 252, 0.1);
         --mysmart-timer-preset-icon-color: var(--mysmart-timer-ink);
         --mysmart-timer-preset-active-background: var(--mysmart-timer-accent);
         --mysmart-timer-preset-active-color: rgba(0, 0, 0, 0.82);
@@ -227,10 +228,11 @@ export const cardStyles = css`
 
       .preset {
         display: grid;
-        grid-template-columns: auto minmax(0, 1fr) auto;
+        /* Mirrors the small universal_navigate button-card: 56px icon inset 4px, text from 76px. */
+        grid-template-columns: 56px minmax(0, 1fr) auto;
         align-items: center;
         gap: 16px;
-        padding: 8px 26px 8px 8px;
+        padding: 4px 22px 4px 4px;
         min-height: 0;
         border-radius: 32px;
         background: var(--mysmart-timer-preset-background);
@@ -240,13 +242,16 @@ export const cardStyles = css`
       }
 
       .preset-icon {
-        width: 52px;
-        height: 52px;
+        box-sizing: border-box;
+        width: 56px;
+        height: 56px;
         display: grid;
         place-items: center;
-        border-radius: 999px;
+        border-radius: 50%;
+        border: 1px solid var(--mysmart-timer-preset-icon-border);
         background: var(--mysmart-timer-preset-icon-background);
         color: var(--mysmart-timer-preset-icon-color);
+        --mdc-icon-size: 30px;
       }
 
       .preset-copy {
@@ -263,19 +268,21 @@ export const cardStyles = css`
       }
 
       .preset-name {
-        font-size: var(--ha-font-size-m, 14px);
-        font-weight: 600;
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 1.2em;
       }
 
       .preset-subtitle {
         font-size: 14px;
         font-weight: 500;
-        color: var(--mysmart-timer-muted);
+        color: inherit;
+        opacity: 0.7;
       }
 
       .preset-time {
-        font-size: var(--ha-font-size-m, 14px);
-        font-weight: 600;
+        font-size: 16px;
+        font-weight: 500;
         font-variant-numeric: tabular-nums;
       }
 
@@ -291,6 +298,7 @@ export const cardStyles = css`
 
       .preset.active .preset-icon {
         background: rgba(0, 0, 0, 0.1);
+        border-color: rgba(0, 0, 0, 0.1);
         color: inherit;
       }
 

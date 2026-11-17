@@ -174,6 +174,23 @@ export function looksLikeFinish(previousSnapshot, nextStateObj, nowMs = Date.now
   );
 }
 
+// Reads an action config, either "domain.service" or { action, data, target }, into the arguments
+// hass.callService takes. Returns null when no valid action is configured.
+export function parseActionConfig(config) {
+  const name = typeof config === 'string' ? config : config?.action;
+  const match = /^([a-z0-9_]+)\.([a-z0-9_]+)$/.exec(String(name ?? '').trim());
+  if (!match) {
+    return null;
+  }
+
+  return {
+    domain: match[1],
+    service: match[2],
+    data: config?.data ?? {},
+    target: config?.target,
+  };
+}
+
 // An explicit `presets: []` hides the preset column; leaving presets out uses the defaults.
 export function normalizePresets(presets, fallback = []) {
   const source = Array.isArray(presets) ? presets : fallback;
